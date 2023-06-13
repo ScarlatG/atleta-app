@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it" class="h-100">
+  <head>
+    <!-- Common imports in pages -->
+
+    <title>Pagina dei Risultati</title>
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    <!-- Fixed navbar -->
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+      <div class="container">
+        <div class="card">
+          <div class="card-header">
+            <h5>Lista degli atleti</h5>
+          </div>
+          <div class="card-body">
+            <button
+              class="btn btn-sm btn-outline-secondary"
+              [routerLink]="['/atleta/create']"
+            >
+              Aggiungi nuovo
+            </button>
+
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>In Attività</th>
+                    <th>Data Ultima Gara</th>
+                    <th>Numero Medaglie Vinte</th>
+                    <th>Azioni</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let atletaItem of listaAtleti">
+                    <td>{{ atletaItem.nome }}</td>
+                    <td>{{ atletaItem.cognome }}</td>
+                    <td>{{ atletaItem.inAttivita ? "SI" : "NO" }}</td>
+                    <td>
+                      {{ atletaItem.dataUltimaGara | date : "dd/MM/yyyy" }}
+                    </td>
+                    <td>{{ atletaItem.numeroMedaglieVinte }}</td>
+                    <td>
+                      <button
+                        class="btn btn-sm btn-outline-secondary"
+                        [routerLink]="['/atleta/detail', atletaItem.id]"
+                      >
+                        Visualizza
+                      </button>
+                      <a
+                        class="btn btn-sm btn-outline-primary ml-2 mr-2"
+                        [routerLink]="['/atleta/edit', atletaItem.id]"
+                      >
+                        Modifica
+                      </a>
+                      <a
+                        class="btn btn-outline-danger btn-sm"
+                        [routerLink]="['/atleta/delete', atletaItem.id]"
+                      >
+                        Elimina
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+  </body>
+</html>
