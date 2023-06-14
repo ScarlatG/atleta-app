@@ -1,0 +1,53 @@
+<main class="flex-shrink-0">
+  <div class="container">
+    <div class="card">
+      <div class="card-header">Visualizza dettaglio</div>
+
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-3 text-right">Id:</dt>
+          <dd class="col-sm-9">{{ atletaToDelete?.id }}</dd>
+        </dl>
+
+        <dl class="row">
+          <dt class="col-sm-3 text-right">Nome:</dt>
+          <dd class="col-sm-9">{{ atletaToDelete?.nome }}</dd>
+        </dl>
+
+        <dl class="row">
+          <dt class="col-sm-3 text-right">Cognome:</dt>
+          <dd class="col-sm-9">{{ atletaToDelete?.cognome }}</dd>
+        </dl>
+
+        <dl class="row">
+          <dt class="col-sm-3 text-right">In Attività:</dt>
+          <dd class="col-sm-9">
+            {{ atletaToDelete?.inAttivita ? "SI" : "NO" }}
+          </dd>
+        </dl>
+
+        <dl class="row">
+          <dt class="col-sm-3 text-right">Data Ultima Gara:</dt>
+          <dd class="col-sm-9">
+            {{ atletaToDelete?.dataUltimaGara | date : "dd/MM/yyyy" }}
+          </dd>
+        </dl>
+
+        <dl class="row">
+          <dt class="col-sm-3 text-right">Numero Medaglie Vinte:</dt>
+          <dd class="col-sm-9">{{ atletaToDelete?.numeroMedaglieVinte }}</dd>
+        </dl>
+
+        <button (click)="onBack()" class="btn btn-primary btn-lg">
+          Torna alla lista
+        </button>
+        <button (click)="toDelete()" class="btn btn-outline-danger btn-sm">
+          Elimina
+        </button>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end container -->
+</main>

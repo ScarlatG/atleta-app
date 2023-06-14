@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Atleta } from 'src/app/model/atleta';
-import { Observable, filter, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AtletaService {
-  constructor() {}
-
   listaAtleti: Atleta[] = [
     {
       id: 1,
@@ -51,12 +52,61 @@ export class AtletaService {
     },
   ];
 
+  private atletiUrl = 'http://localhost:8080/api/atleta'; // URL to web api
+
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  };
+
+  constructor(private http: HttpClient) {}
+
   listAll(): Observable<Atleta[]> {
-    return of(this.listaAtleti);
+    return this.http
+      .get<Atleta[]>(this.atletiUrl)
+      .pipe(catchError(this.handleError<Atleta[]>('getAtleti', [])));
+  }
+
+  findById(id: number): Observable<Atleta | undefined> {
+    const url = `${this.atletiUrl}/${id}`;
+    return this.http.get<Atleta>(url).pipe(
+      tap((_) => console.log(`Fetched atleta id=${id}`)),
+      catchError(this.handleError<Atleta>(`getAtleta id=${id}`))
+    );
+  }
+
+  update(atleta: Atleta): Observable<Atleta> {
+    const url = `${this.atletiUrl}/${atleta.id}`;
+    return this.http.put<Atleta>(url, atleta, this.httpOptions).pipe(
+      tap((_) => console.log(`Updated atleta id=${atleta.id}`)),
+      catchError(this.handleError<any>('updateAtleta'))
+    );
+  }
+
+  delete(id: number): Observable<boolean> {
+    const url = `${this.atletiUrl}/${id}`;
+    return this.http.delete<boolean>(url, this.httpOptions).pipe(
+      tap((_) => console.log(`Deleted atleta id=${id}`)),
+      catchError(this.handleError<any>('deleteAtleta'))
+    );
   }
 
   create(atleta: Atleta): Observable<Atleta> {
-    this.listaAtleti.push(atleta);
-    return of(atleta);
+    return this.http
+      .post<Atleta>(this.atletiUrl, atleta, this.httpOptions)
+      .pipe(
+        tap((newAtleta: Atleta) =>
+          console.log(`Added atleta id=${newAtleta.id}`)
+        ),
+        catchError(this.handleError<Atleta>('createAtleta'))
+      );
+  }
+
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error); // log to console instead
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
   }
 }

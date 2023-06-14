@@ -11,7 +11,7 @@ import { AtletaService } from '../atleta.service';
 })
 export class AtletaCreateComponent implements OnInit {
   atleta: Atleta = {
-    id: 0,
+    id: undefined,
     nome: '',
     cognome: '',
     inAttivita: false,
